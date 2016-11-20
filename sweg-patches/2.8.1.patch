@@ -1,0 +1,585 @@
+diff --git a/README.md b/README.md
+index f1a9f36..656a5d1 100644
+--- a/README.md
++++ b/README.md
+@@ -1,149 +1,34 @@
+-# React Router [![Travis][build-badge]][build] [![npm package][npm-badge]][npm]
++# React Router [![npm package][npm-badge]][npm]
+ 
+-<img src="/logo/vertical@2x.png" height="150"/>
++This is a fork of React Router:2.8.1 with SWEG [React](https://facebook.github.io/react).
+ 
+-React Router is a complete routing library for [React](https://facebook.github.io/react).
++```sh
++npm install --save react-router-with-sweg@2.8.1
+ 
+-React Router keeps your UI in sync with the URL. It has a simple API with powerful features like lazy code loading, dynamic route matching, and location transition handling built right in. Make the URL your first thought, not an after-thought.
++## What is SWEG?
+ 
+-[![Codecov][codecov-badge]][codecov]
+-[![Discord][discord-badge]][discord]
++In short, SWEG adds an extra argument to your route tranistion hooks, e.g.
+ 
+-### Docs & Help
++##### `onEnter(nextState, theSweg, replace, callback?)`
+ 
+-- [Tutorial – do this first!](https://github.com/reactjs/react-router-tutorial)
+-- [Guides and API docs](/docs)
+-- [Troubleshooting guide](https://github.com/reactjs/react-router/blob/master/docs/Troubleshooting.md)
+-- [Changelog](/CHANGES.md)
+-- [Stack Overflow](http://stackoverflow.com/questions/tagged/react-router)
+-- [CodePen boilerplate](http://codepen.io/anon/pen/xwQZdy?editors=001) for bug reports
++Instead of: `onEnter(nextState, replace, callback?)`
+ 
+-**Older Versions:**
++##### `onChange(prevState, nextState, theSweg, replace, callback?)`
+ 
+-- 0.13.x - [docs](https://github.com/reactjs/react-router/tree/v0.13.6/doc) / [guides](https://github.com/reactjs/react-router/tree/v0.13.6/docs/guides) / [code](https://github.com/reactjs/react-router/tree/v0.13.6) / [upgrade guide](https://github.com/reactjs/react-router/blob/master/upgrade-guides/v1.0.0.md)
+-- 1.0.x - [docs](https://github.com/reactjs/react-router/tree/1.0.x/docs) / [code](https://github.com/reactjs/react-router/tree/1.0.x) / [upgrade guide](https://github.com/reactjs/react-router/blob/master/upgrade-guides/v2.0.0.md)
++Instead of: `onChange(prevState, nextState, replace, callback?)`
+ 
+-For questions and support, please visit [our channel on Reactiflux](https://discord.gg/0ZcbPKXt5bYaNQ46) or [Stack Overflow](http://stackoverflow.com/questions/tagged/react-router).
++##### `onLeave(prevState, theSweg)`
+ 
+-### Browser Support
++Instead of: `onLeave(prevState)`
+ 
+-We support all browsers and environments where React runs.
++wher theSweg can be created by providing eiter:
+ 
+-### Installation
++1. `const getSweg() => ({ foo: bar, });` prop to `<Router>` component
++2. by adding an extra argument (third) to match call, e.g: `match(opts, callback, getSweg = () => ({ foo: bar, }))`
+ 
+-Using [npm](https://www.npmjs.com/):
++# Looking for the real repo?
+ 
+-    $ npm install --save react-router
++https://github.com/reactjs/react-router-tutorial
+ 
+-Then with a module bundler like [webpack](https://webpack.github.io/) that supports either CommonJS or ES2015 modules, use as you would anything else:
+-
+-```js
+-// using an ES6 transpiler, like babel
+-import { Router, Route, Link } from 'react-router'
+-
+-// not using an ES6 transpiler
+-var Router = require('react-router').Router
+-var Route = require('react-router').Route
+-var Link = require('react-router').Link
+-```
+-
+-The UMD build is also available on [unpkg](https://unpkg.com):
+-
+-```html
+-<script src="https://unpkg.com/react-router/umd/ReactRouter.min.js"></script>
+-```
+-
+-You can find the library on `window.ReactRouter`.
+-
+-### What's it look like?
+-
+-```js
+-import React from 'react'
+-import { render } from 'react-dom'
+-import { Router, Route, Link, browserHistory } from 'react-router'
+-
+-const App = React.createClass({/*...*/})
+-const About = React.createClass({/*...*/})
+-const NoMatch = React.createClass({/*...*/})
+-
+-const Users = React.createClass({
+-  render() {
+-    return (
+-      <div>
+-        <h1>Users</h1>
+-        <div className="master">
+-          <ul>
+-            {/* use Link to route around the app */}
+-            {this.state.users.map(user => (
+-              <li key={user.id}><Link to={`/user/${user.id}`}>{user.name}</Link></li>
+-            ))}
+-          </ul>
+-        </div>
+-        <div className="detail">
+-          {this.props.children}
+-        </div>
+-      </div>
+-    )
+-  }
+-})
+-
+-const User = React.createClass({
+-  componentDidMount() {
+-    this.setState({
+-      // route components are rendered with useful information, like URL params
+-      user: findUserById(this.props.params.userId)
+-    })
+-  },
+-
+-  render() {
+-    return (
+-      <div>
+-        <h2>{this.state.user.name}</h2>
+-        {/* etc. */}
+-      </div>
+-    )
+-  }
+-})
+-
+-// Declarative route configuration (could also load this config lazily
+-// instead, all you really need is a single root route, you don't need to
+-// colocate the entire config).
+-render((
+-  <Router history={browserHistory}>
+-    <Route path="/" component={App}>
+-      <Route path="about" component={About}/>
+-      <Route path="users" component={Users}>
+-        <Route path="/user/:userId" component={User}/>
+-      </Route>
+-      <Route path="*" component={NoMatch}/>
+-    </Route>
+-  </Router>
+-), document.getElementById('root'))
+-```
+-
+-See more in the [Introduction](/docs/Introduction.md), [Guides](/docs/guides/README.md), and [Examples](/examples).
+-
+-### Versioning and Stability
+-
+-We want React Router to be a stable dependency that’s easy to keep current. We take the same approach to versioning as React.js itself: [React Versioning Scheme](https://facebook.github.io/react/blog/2016/02/19/new-versioning-scheme.html).
+-
+-### Thanks
+-
+-Thanks to [our sponsors](/SPONSORS.md) for supporting the development of
+-React Router.
+-
+-React Router was initially inspired by Ember's fantastic router. Many thanks to the Ember team.
+-
+-Also, thanks to [BrowserStack](https://www.browserstack.com/) for providing the infrastructure that allows us to run our build in real browsers.
+-
+-[build-badge]: https://img.shields.io/travis/reactjs/react-router/master.svg?style=flat-square
+-[build]: https://travis-ci.org/reactjs/react-router
+-
+-[npm-badge]: https://img.shields.io/npm/v/react-router.svg?style=flat-square
+-[npm]: https://www.npmjs.org/package/react-router
+-
+-[codecov-badge]: https://img.shields.io/codecov/c/github/reactjs/react-router/master.svg?style=flat-square
+-[codecov]: https://codecov.io/gh/reactjs/react-router
+-
+-[discord-badge]: https://img.shields.io/badge/Discord-join%20chat%20%E2%86%92-738bd7.svg?style=flat-square
+-[discord]: https://discord.gg/0ZcbPKXt5bYaNQ46
++[npm-badge]: https://img.shields.io/npm/v/react-router-with-sweg.svg?style=flat-square
++[npm]: https://www.npmjs.org/package/react-router-with-sweg
+diff --git a/examples/auth-flow-async-with-query-params/app.js b/examples/auth-flow-async-with-query-params/app.js
+index cd85651..db6dbe9 100644
+--- a/examples/auth-flow-async-with-query-params/app.js
++++ b/examples/auth-flow-async-with-query-params/app.js
+@@ -57,7 +57,7 @@ function ErrorPage() {
+   return <h1>Oh no! Your auth failed!</h1>
+ }
+ 
+-function requireCredentials(nextState, replace, next) {
++function requireCredentials(nextState, theSweg, replace, next) {
+   const query = nextState.location.query
+   if (query.qsparam) {
+     serverAuth(query.qsparam)
+diff --git a/examples/auth-with-shared-root/config/routes.js b/examples/auth-with-shared-root/config/routes.js
+index 683a41b..80b5353 100644
+--- a/examples/auth-with-shared-root/config/routes.js
++++ b/examples/auth-with-shared-root/config/routes.js
+@@ -1,6 +1,6 @@
+ import auth from '../utils/auth.js'
+ 
+-function redirectToLogin(nextState, replace) {
++function redirectToLogin(nextState, theSweg, replace) {
+   if (!auth.loggedIn()) {
+     replace({
+       pathname: '/login',
+@@ -9,7 +9,7 @@ function redirectToLogin(nextState, replace) {
+   }
+ }
+ 
+-function redirectToDashboard(nextState, replace) {
++function redirectToDashboard(nextState, theSweg, replace) {
+   if (auth.loggedIn()) {
+     replace('/')
+   }
+diff --git a/modules/Redirect.js b/modules/Redirect.js
+index 7a8333f..c3f3e14 100644
+--- a/modules/Redirect.js
++++ b/modules/Redirect.js
+@@ -16,14 +16,14 @@ const { string, object } = React.PropTypes
+ const Redirect = React.createClass({
+ 
+   statics: {
+-    
++
+     createRouteFromReactElement(element) {
+       const route = createRouteFromReactElement(element)
+ 
+       if (route.from)
+         route.path = route.from
+ 
+-      route.onEnter = function (nextState, replace) {
++      route.onEnter = function (nextState, theSweg, replace) {
+         const { location, params } = nextState
+ 
+         let pathname
+diff --git a/modules/Router.js b/modules/Router.js
+index 7da4dae..fd017b0 100644
+--- a/modules/Router.js
++++ b/modules/Router.js
+@@ -38,6 +38,9 @@ const Router = React.createClass({
+     onError: func,
+     onUpdate: func,
+ 
++    // now with some extra sweg
++    getSweg: func,
++
+     // Deprecated:
+     parseQueryString: func,
+     stringifyQuery: func,
+@@ -113,8 +116,10 @@ const Router = React.createClass({
+       history = this.wrapDeprecatedHistory(history)
+     }
+ 
++    const { getSweg } = this.props
++
+     const transitionManager = createTransitionManager(
+-      history, createRoutes(routes || children)
++      history, createRoutes(routes || children), getSweg
+     )
+     const router = createRouterObject(history, transitionManager)
+     const routingHistory = createRoutingHistory(history, transitionManager)
+diff --git a/modules/TransitionUtils.js b/modules/TransitionUtils.js
+index 4445744..d31511f 100644
+--- a/modules/TransitionUtils.js
++++ b/modules/TransitionUtils.js
+@@ -17,7 +17,7 @@ function createTransitionHook(hook, route, asyncArity) {
+ function getEnterHooks(routes) {
+   return routes.reduce(function (hooks, route) {
+     if (route.onEnter)
+-      hooks.push(createTransitionHook(route.onEnter, route, 3))
++      hooks.push(createTransitionHook(route.onEnter, route, 4))
+ 
+     return hooks
+   }, [])
+@@ -26,7 +26,7 @@ function getEnterHooks(routes) {
+ function getChangeHooks(routes) {
+   return routes.reduce(function (hooks, route) {
+     if (route.onChange)
+-      hooks.push(createTransitionHook(route.onChange, route, 4))
++      hooks.push(createTransitionHook(route.onChange, route, 5))
+     return hooks
+   }, [])
+ }
+@@ -77,10 +77,10 @@ function runTransitionHooks(length, iter, callback) {
+  * function. However, doing so will cause the transition to pause,
+  * which could lead to a non-responsive UI if the hook is slow.
+  */
+-export function runEnterHooks(routes, nextState, callback) {
++export function runEnterHooks(routes, nextState, theSweg, callback) {
+   const hooks = getEnterHooks(routes)
+   return runTransitionHooks(hooks.length, (index, replace, next) => {
+-    hooks[index](nextState, replace, next)
++    hooks[index](nextState, theSweg, replace, next)
+   }, callback)
+ }
+ 
+@@ -94,18 +94,18 @@ export function runEnterHooks(routes, nextState, callback) {
+  * function. However, doing so will cause the transition to pause,
+  * which could lead to a non-responsive UI if the hook is slow.
+  */
+-export function runChangeHooks(routes, state, nextState, callback) {
++export function runChangeHooks(routes, state, nextState, theSweg, callback) {
+   const hooks = getChangeHooks(routes)
+   return runTransitionHooks(hooks.length, (index, replace, next) => {
+-    hooks[index](state, nextState, replace, next)
++    hooks[index](state, nextState, theSweg, replace, next)
+   }, callback)
+ }
+ 
+ /**
+  * Runs all onLeave hooks in the given array of routes in order.
+  */
+-export function runLeaveHooks(routes, prevState) {
++export function runLeaveHooks(routes, prevState, theSweg) {
+   for (let i = 0, len = routes.length; i < len; ++i)
+     if (routes[i].onLeave)
+-      routes[i].onLeave.call(routes[i], prevState)
++      routes[i].onLeave.call(routes[i], prevState, theSweg)
+ }
+diff --git a/modules/__tests__/_bc-serverRendering-test.js b/modules/__tests__/_bc-serverRendering-test.js
+index 1de3964..65aac00 100644
+--- a/modules/__tests__/_bc-serverRendering-test.js
++++ b/modules/__tests__/_bc-serverRendering-test.js
+@@ -56,7 +56,7 @@ describe('v1 server rendering', function () {
+ 
+   const RedirectRoute = {
+     path: '/company',
+-    onEnter(nextState, replaceState) {
++    onEnter(nextState, theSweg, replaceState) {
+       replaceState(null, '/about')
+     }
+   }
+diff --git a/modules/__tests__/_bc-transitionHooks-test.js b/modules/__tests__/_bc-transitionHooks-test.js
+index 16085d0..0f9adeb 100644
+--- a/modules/__tests__/_bc-transitionHooks-test.js
++++ b/modules/__tests__/_bc-transitionHooks-test.js
+@@ -38,7 +38,7 @@ describe('v1 When a router enters a branch', function () {
+     NewsFeedRoute = {
+       path: 'news',
+       component: NewsFeed,
+-      onEnter(nextState, replaceState) {
++      onEnter(nextState, theSweg, replaceState) {
+         expect(this).toBe(NewsFeedRoute)
+         expect(nextState.routes).toContain(NewsFeedRoute)
+         expect(replaceState).toBeA('function')
+@@ -51,7 +51,7 @@ describe('v1 When a router enters a branch', function () {
+     InboxRoute = {
+       path: 'inbox',
+       component: Inbox,
+-      onEnter(nextState, replaceState) {
++      onEnter(nextState, theSweg, replaceState) {
+         expect(this).toBe(InboxRoute)
+         expect(nextState.routes).toContain(InboxRoute)
+         expect(replaceState).toBeA('function')
+@@ -63,7 +63,7 @@ describe('v1 When a router enters a branch', function () {
+ 
+     RedirectToInboxRoute = {
+       path: 'redirect-to-inbox',
+-      onEnter(nextState, replaceState) {
++      onEnter(nextState, theSweg, replaceState) {
+         expect(this).toBe(RedirectToInboxRoute)
+         expect(nextState.routes).toContain(RedirectToInboxRoute)
+         expect(replaceState).toBeA('function')
+@@ -77,7 +77,7 @@ describe('v1 When a router enters a branch', function () {
+ 
+     MessageRoute = {
+       path: 'messages/:messageID',
+-      onEnter(nextState, replaceState) {
++      onEnter(nextState, theSweg, replaceState) {
+         expect(this).toBe(MessageRoute)
+         expect(nextState.routes).toContain(MessageRoute)
+         expect(replaceState).toBeA('function')
+@@ -89,7 +89,7 @@ describe('v1 When a router enters a branch', function () {
+ 
+     DashboardRoute = {
+       component: Dashboard,
+-      onEnter(nextState, replaceState) {
++      onEnter(nextState, theSweg, replaceState) {
+         expect(this).toBe(DashboardRoute)
+         expect(nextState.routes).toContain(DashboardRoute)
+         expect(replaceState).toBeA('function')
+@@ -103,6 +103,7 @@ describe('v1 When a router enters a branch', function () {
+     routes = [
+       DashboardRoute
+     ]
++
+   })
+ 
+   afterEach(function () {
+diff --git a/modules/__tests__/serverRendering-test.js b/modules/__tests__/serverRendering-test.js
+index 1f76bb5..0a295f6 100644
+--- a/modules/__tests__/serverRendering-test.js
++++ b/modules/__tests__/serverRendering-test.js
+@@ -68,7 +68,7 @@ describe('server rendering', function () {
+ 
+   const RedirectRoute = {
+     path: '/company',
+-    onEnter(nextState, replace) {
++    onEnter(nextState, theSweg, replace) {
+       replace('/about')
+     }
+   }
+diff --git a/modules/__tests__/transitionHooks-test.js b/modules/__tests__/transitionHooks-test.js
+index 586428a..b71edab 100644
+--- a/modules/__tests__/transitionHooks-test.js
++++ b/modules/__tests__/transitionHooks-test.js
+@@ -78,12 +78,12 @@ describe('When a router enters a branch', function () {
+     NewsFeedRoute = {
+       path: 'news',
+       component: NewsFeed,
+-      onEnter(nextState, replace) {
++      onEnter(nextState, theSweg, replace) {
+         expect(this).toBe(NewsFeedRoute)
+         expect(nextState.routes).toContain(NewsFeedRoute)
+         expect(replace).toBeA('function')
+       },
+-      onChange(prevState, nextState, replace) {
++      onChange(prevState, nextState, theSweg, replace) {
+         expect(this).toBe(NewsFeedRoute)
+         expect(prevState).toNotEqual(nextState)
+         expect(prevState.routes).toContain(NewsFeedRoute)
+@@ -99,7 +99,7 @@ describe('When a router enters a branch', function () {
+     InboxRoute = {
+       path: 'inbox',
+       component: Inbox,
+-      onEnter(nextState, replace) {
++      onEnter(nextState, theSweg, replace) {
+         expect(this).toBe(InboxRoute)
+         expect(nextState.routes).toContain(InboxRoute)
+         expect(replace).toBeA('function')
+@@ -112,7 +112,7 @@ describe('When a router enters a branch', function () {
+ 
+     RedirectToInboxRoute = {
+       path: 'redirect-to-inbox',
+-      onEnter(nextState, replace) {
++      onEnter(nextState, theSweg, replace) {
+         expect(this).toBe(RedirectToInboxRoute)
+         expect(nextState.routes).toContain(RedirectToInboxRoute)
+         expect(replace).toBeA('function')
+@@ -127,12 +127,12 @@ describe('When a router enters a branch', function () {
+ 
+     MessageRoute = {
+       path: 'messages/:messageID',
+-      onEnter(nextState, replace) {
++      onEnter(nextState, theSweg, replace) {
+         expect(this).toBe(MessageRoute)
+         expect(nextState.routes).toContain(MessageRoute)
+         expect(replace).toBeA('function')
+       },
+-      onChange(prevState, nextState, replace) {
++      onChange(prevState, nextState, theSweg, replace) {
+         expect(this).toBe(MessageRoute)
+         expect(prevState.routes).toContain(MessageRoute)
+         expect(nextState.routes).toContain(MessageRoute)
+@@ -162,12 +162,12 @@ describe('When a router enters a branch', function () {
+     DashboardRoute = {
+       path: '/',
+       component: Dashboard,
+-      onEnter(nextState, replace) {
++      onEnter(nextState, theSweg, replace) {
+         expect(this).toBe(DashboardRoute)
+         expect(nextState.routes).toContain(DashboardRoute)
+         expect(replace).toBeA('function')
+       },
+-      onChange(prevState, nextState, replace) {
++      onChange(prevState, nextState, theSweg, replace) {
+         expect(this).toBe(DashboardRoute)
+         expect(prevState).toNotEqual(nextState)
+         expect(prevState.routes).toContain(DashboardRoute)
+diff --git a/modules/createTransitionManager.js b/modules/createTransitionManager.js
+index 28f757e..e6cd180 100644
+--- a/modules/createTransitionManager.js
++++ b/modules/createTransitionManager.js
+@@ -13,7 +13,7 @@ function hasAnyProperties(object) {
+   return false
+ }
+ 
+-export default function createTransitionManager(history, routes) {
++export default function createTransitionManager(history, routes, getSweg) {
+   let state = {}
+ 
+   // Signature should be (location, indexOnly), but needs to support (path,
+@@ -64,7 +64,9 @@ export default function createTransitionManager(history, routes) {
+   function finishMatch(nextState, callback) {
+     const { leaveRoutes, changeRoutes, enterRoutes } = computeChangedRoutes(state, nextState)
+ 
+-    runLeaveHooks(leaveRoutes, state)
++    const theSweg = getSweg ? getSweg() : null
++
++    runLeaveHooks(leaveRoutes, state, theSweg)
+ 
+     // Tear down confirmation hooks for left routes
+     leaveRoutes
+@@ -72,11 +74,11 @@ export default function createTransitionManager(history, routes) {
+       .forEach(removeListenBeforeHooksForRoute)
+ 
+     // change and enter hooks are run in series
+-    runChangeHooks(changeRoutes, state, nextState, (error, redirectInfo) => {
++    runChangeHooks(changeRoutes, state, nextState, theSweg, (error, redirectInfo) => {
+       if (error || redirectInfo)
+         return handleErrorOrRedirect(error, redirectInfo)
+ 
+-      runEnterHooks(enterRoutes, nextState, finishEnterHooks)
++      runEnterHooks(enterRoutes, nextState, theSweg, finishEnterHooks)
+     })
+ 
+     function finishEnterHooks(error, redirectInfo) {
+diff --git a/modules/match.js b/modules/match.js
+index 688c870..540a69e 100644
+--- a/modules/match.js
++++ b/modules/match.js
+@@ -15,7 +15,7 @@ import { createRouterObject, createRoutingHistory } from './RouterUtils'
+  * Note: You probably don't want to use this in a browser unless you're using
+  * server-side rendering with async routes.
+  */
+-function match({ history, routes, location, ...options }, callback) {
++function match({ history, routes, location, ...options }, callback, getSweg) {
+   invariant(
+     history || location,
+     'match needs a history or a location'
+@@ -24,7 +24,8 @@ function match({ history, routes, location, ...options }, callback) {
+   history = history ? history : createMemoryHistory(options)
+   const transitionManager = createTransitionManager(
+     history,
+-    createRoutes(routes)
++    createRoutes(routes),
++    getSweg
+   )
+ 
+   let unlisten
+diff --git a/package.json b/package.json
+index 43b1875..67bc6ee 100644
+--- a/package.json
++++ b/package.json
+@@ -1,7 +1,7 @@
+ {
+-  "name": "react-router",
++  "name": "react-router-with-sweg",
+   "version": "2.8.1",
+-  "description": "A complete routing library for React",
++  "description": "A complete routing library for React. Now with SWEG!",
+   "files": [
+     "*.md",
+     "docs",
+@@ -11,9 +11,9 @@
+   ],
+   "main": "lib/index",
+   "jsnext:main": "es6/index",
+-  "repository": "reactjs/react-router",
+-  "homepage": "https://github.com/reactjs/react-router#readme",
+-  "bugs": "https://github.com/reactjs/react-router/issues",
++  "repository": "jyrno42/react-router",
++  "homepage": "https://github.com/jyrno42/react-router#readme",
++  "bugs": "https://github.com/jyrno42/react-router/issues",
+   "scripts": {
+     "build": "npm run build-cjs && npm run build-es",
+     "build-cjs": "rimraf lib && cross-env BABEL_ENV=cjs babel ./modules -d lib --ignore '__tests__'",
+@@ -28,7 +28,8 @@
+   },
+   "authors": [
+     "Ryan Florence",
+-    "Michael Jackson"
++    "Michael Jackson",
++    "SWEG by Jürno Ader"
+   ],
+   "license": "MIT",
+   "dependencies": {
+@@ -91,7 +92,11 @@
+   },
+   "tags": [
+     "react",
+-    "router"
++    "router",
++    "sweg",
++    "jyrno42",
++    "thorgate",
++    "thorcake"
+   ],
+   "keywords": [
+     "react",
+@@ -99,6 +104,10 @@
+     "routing",
+     "route",
+     "routes",
+-    "router"
++    "router",
++    "sweg",
++    "jyrno42",
++    "thorgate",
++    "thorcake"
+   ]
+ }
